@@ -116,6 +116,14 @@ const Navigation = () => {
         component={require('./views/DetailsScreen').default}
         options={{ headerTitle: 'Article' }}
       />
+      <Stack.Screen
+        name='AddSource'
+        component={require('./views/AddSourceScreen').default}
+        options={{
+          headerTitle: 'Ajouter une source',
+          presentation: 'modal',
+        }}
+      />
     </Stack.Navigator>
   )
 }

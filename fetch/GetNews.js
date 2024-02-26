@@ -66,16 +66,12 @@ const GetMultipleFeeds = async (sources) => {
 }
 
 const GetHeadlines = async (sources, max) => {
-  let feeds = [];
-
-  sources.forEach((source) => {
-    feeds.push(source.feeds[0]);
-  });
-
-  return JoinMultipleFeeds(feeds, max)
+  return JoinMultipleFeeds(sources, max)
     .then((data) => {
-      // order randomly
-      data.sort(() => Math.random() - 0.5);
+      // sort by id
+      data.sort((a, b) => {
+        return new Date(b.id) - new Date(a.id);
+      });
 
       return data;
     });

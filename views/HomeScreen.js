@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, ScrollView, Button, FlatList, RefreshControl, StyleSheet, Image, Pressable, Touchable, TouchableOpacity } from 'react-native';
+import { View, ScrollView, Button, FlatList, RefreshControl, StyleSheet, Image, Pressable, Touchable, TouchableOpacity, ActivityIndicator } from 'react-native';
 
 import { NativeList, NativeItem, NativeText } from '../components/NativeTableView';
 
@@ -8,44 +8,57 @@ import { GetHeadlines } from '../fetch/GetNews';
 import { useTheme } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import { Newspaper, SwatchBook, Plus } from 'lucide-react-native';
+
 function HomeScreen({ navigation }) {
   const {colors} = useTheme();
   const insets = useSafeAreaInsets();
 
   let [headlines, setHeadlines] = useState([]);
   let [refreshing, setRefreshing] = useState(false);
+  let [loading, setLoading] = useState(false);
+
+  const [sources, setSources] = React.useState([]);
 
   const fetchHeadlines = async () => {
-    let sources = [
-      {
-        title: 'France 24',
-        feeds: [
-          'https://www.france24.com/fr/rss',
-        ]
-      },
-      {
-        title: 'Franceinfo',
-        feeds: [
-          'https://www.francetvinfo.fr/titres.rss',
-        ]
-      },
-      {
-        title: 'Ouest-France',
-        feeds: [
-          'https://www.ouest-france.fr/rss/une',
-        ]
+    setLoading(true);
+    AsyncStorage.getItem('sources').then((data) => {
+      if (data) {
+        let sources = JSON.parse(data);
+        setSources(sources);
+        GetHeadlines(sources, 5).then((data) => {
+          setHeadlines(data);
+          setRefreshing(false);
+          setLoading(false);
+        });
       }
-    ]
-
-    GetHeadlines(sources, 5).then((data) => {
-      setHeadlines(data);
-      setRefreshing(false);
     });
   }
 
   useEffect(() => {
     fetchHeadlines();
   }, []);
+
+  // get sources on focus
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      if (sources.length == 0) {
+        AsyncStorage.getItem('sources').then((data) => {
+          if (data) {
+            let sr = JSON.parse(data);
+            if (sr.length !== sources.length) {
+              setSources(sr);
+              fetchHeadlines();
+            }
+          }
+        });
+      }
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   return (
     <View style={{ flex: 1 }}>
@@ -59,7 +72,7 @@ function HomeScreen({ navigation }) {
       >
         <NativeText>(header)</NativeText>
       </View>
-      
+
       <FlatList
         data={headlines}
         style={[styles.list]}
@@ -67,10 +80,76 @@ function HomeScreen({ navigation }) {
           <LargeNewsItem item={item} navigation={navigation} />
         )}
         ListFooterComponent={<View style={{height: 16}} />}
+        ListEmptyComponent={<EmptyTapActu sources={sources} loading={loading} navigation={navigation} />}
         refreshing={refreshing}
         onRefresh={fetchHeadlines}
         keyExtractor={item => item.id}
       />
+    </View>
+  );
+}
+
+const EmptyTapActu = ({ sources, loading, navigation }) => {
+  const {colors} = useTheme();
+
+  if (loading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginVertical: 16, gap: 4 }}>
+        <ActivityIndicator />
+        <NativeText heading="h2" style={{textAlign: 'center', marginTop: 8}}>
+          Chargement en cours
+        </NativeText>
+        <NativeText heading="p2" style={{textAlign: 'center'}}>
+          Obtention des dernières actualités...
+        </NativeText>
+      </View>
+    );
+  }
+
+  if (sources.length <= 0) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginVertical: 16, gap: 4 }}>
+        <SwatchBook size={36} color={colors.text} />
+        <NativeText heading="h2" style={{textAlign: 'center', marginTop: 8}}>
+          Aucune source
+        </NativeText>
+        <NativeText heading="p2" style={{textAlign: 'center'}}>
+          Commencez par ajouter une source pour obtenir des actualités.
+        </NativeText>
+
+        <TouchableOpacity
+          style={{
+            flex: 1,
+            backgroundColor: colors.primary,
+            flexDirection: 'row',
+            alignItems: 'center',
+            width: '100%',
+            justifyContent: 'center',
+            paddingVertical: 10,
+            gap: 9,
+            borderRadius: 100,
+            marginTop: 16,
+          }}
+          onPress={() => navigation.navigate('AddSource')}
+        >
+          <Plus size={24} color={colors.background} />
+          <NativeText style={{ color: colors.background }}>
+            Ajouter une source
+          </NativeText>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
+  return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginVertical: 16, gap: 4 }}>
+      <Newspaper size={36} color={colors.text} />
+      <NativeText heading="h2" style={{textAlign: 'center', marginTop: 8}}>
+        Aucune actualité
+      </NativeText>
+      <NativeText heading="p2" style={{textAlign: 'center'}}>
+        Aucune actualité n'est disponible pour le moment.
+      </NativeText>
     </View>
   );
 }
@@ -109,7 +188,7 @@ const LargeNewsItem = ({ item, navigation }) => {
               {item.source.title.split(' - ')[0]}
             </NativeText>
             <NativeText style={[LargeNewsStyles.detail]} numberOfLines={1} ellipsizeMode='tail'>
-              {item.source.title.split(' - ')[1]}
+              {item.source.title.split(' - ')[1] || 'Flux RSS'}
             </NativeText>
           </View>
         </View>

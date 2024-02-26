@@ -81,7 +81,7 @@ function DetailsScreen({ route, navigation }) {
         style={[styles.button, { backgroundColor: colors.text }]}
       >
         <ExternalLink size={24} strokeWidth={2.2} color={colors.background} />
-        <NativeText style={[styles.buttonText, { color: colors.background }]}>
+        <NativeText style={[styles.buttonText, { color: colors.background }]} numberOfLines={1} ellipsizeMode='tail'>
           Lire sur {item.source.links[0].url.split('/')[2].split('/')[0].split('www.')[1]}
         </NativeText>
       </TouchableOpacity>
@@ -99,6 +99,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flexDirection: 'row',
     gap: 10,
+    paddingHorizontal: 32,
   },
   buttonText: {
     fontSize: 16,
