@@ -112,6 +112,16 @@ const Navigation = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen
+        name='Settings'
+        component={require('./views/Settings/SettingsScreen').default}
+        options={{ headerTitle: 'Paramètres', presentation: 'modal'}}
+      />
+      <Stack.Screen
+        name='ChangeName'
+        component={require('./views/Settings/ChangeNameScreen').default}
+        options={{ headerTitle: 'Changer de nom', presentation: 'modal'}}
+      />
+      <Stack.Screen
         name='Article'
         component={require('./views/DetailsScreen').default}
         options={{ headerTitle: 'Article' }}

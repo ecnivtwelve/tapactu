@@ -109,6 +109,9 @@ function HomeScreen({ navigation }) {
             justifyContent: "center",
             alignItems: "center",
           }}
+          onPress={() => {
+            navigation.navigate("Settings");
+          }}
         >
           <Settings size={24} color={colors.text} />
         </TouchableOpacity>
