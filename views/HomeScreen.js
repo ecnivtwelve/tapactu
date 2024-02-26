@@ -25,6 +25,19 @@ function HomeScreen({ navigation }) {
   let [refreshing, setRefreshing] = useState(false);
   let [loading, setLoading] = useState(false);
 
+  let [date, setDate] = useState("");
+
+  const TodayDate = () => {
+    let date = new Date();
+    let options = {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    };
+    setDate(date.toLocaleDateString("fr-FR", options));
+  };
+
   const [sources, setSources] = React.useState([]);
 
   const fetchHeadlines = async () => {
@@ -100,7 +113,6 @@ function HomeScreen({ navigation }) {
           <Settings size={24} color={colors.text} />
         </TouchableOpacity>
       </View>
-
 
       <FlatList
         data={headlines}
@@ -184,7 +196,7 @@ const EmptyTapActu = ({ sources, loading, navigation }) => {
 }
 
 const LargeNewsItem = ({ item, navigation }) => {
-  const {colors} = useTheme();
+  const { colors } = useTheme();
 
   return (
     <TouchableOpacity
