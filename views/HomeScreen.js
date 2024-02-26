@@ -100,7 +100,7 @@ function HomeScreen({ navigation }) {
         <View
           style={{ flexDirection: "column", justifyContent: "space-between" }}
         >
-          <NativeText heading="h1">Bonjour, Vince !</NativeText>
+          <NativeText heading="h1">Bonjour, {name}</NativeText>
           <NativeText style={{ fontSize: 16, opacity: 0.6 }}>{date}</NativeText>
         </View>
         <TouchableOpacity
