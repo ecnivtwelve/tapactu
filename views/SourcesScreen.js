@@ -6,19 +6,22 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { Plus } from 'lucide-react-native';
 
+import { useTheme } from '@react-navigation/native';
+
 function SourcesScreen({ navigation }) {
   const [sources, setSources] = useState([]);
+  const { colors } = useTheme();
 
   // plus button in the header
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
         <TouchableOpacity style={{ marginRight: 16 }} onPress={() => navigation.navigate('AddSource')}>
-          <Plus size={24} color="#000" />
+          <Plus size={24} color={colors.text} />
         </TouchableOpacity>
       ),
     });
-  }, [navigation]);
+  }, [navigation, colors]);
 
   const fetchSources = async () => {
     // fetch sources

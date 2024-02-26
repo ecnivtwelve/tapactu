@@ -93,14 +93,14 @@ function HomeScreen({ navigation }) {
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
-            paddingBottom: 22,
+            paddingBottom: 10,
           },
         ]}
       >
         <View
           style={{ flexDirection: "column", justifyContent: "space-between" }}
         >
-          <NativeText heading="h1">Bonjour, {name}</NativeText>
+          <NativeText heading="h1">Bonjour, Vince !</NativeText>
           <NativeText style={{ fontSize: 16, opacity: 0.6 }}>{date}</NativeText>
         </View>
         <TouchableOpacity
@@ -325,6 +325,7 @@ const LargeNewsStyles = StyleSheet.create({
 const styles = StyleSheet.create({
   list: {
     padding: 16,
+    paddingTop: 6,
   },
   header: {
     padding: 16,
