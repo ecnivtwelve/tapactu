@@ -58,6 +58,7 @@ function TabNavigation() {
           tabBarIcon: ({ color }) => (
             <Newspaper size={24} color={color} />
           ),
+          headerShown: false,
         }}
       />
       <Tab.Screen

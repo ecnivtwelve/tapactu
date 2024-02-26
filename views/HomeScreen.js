@@ -6,8 +6,12 @@ import { NativeList, NativeItem, NativeText } from '../components/NativeTableVie
 import { GetHeadlines } from '../fetch/GetNews';
 
 import { useTheme } from '@react-navigation/native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 function HomeScreen({ navigation }) {
+  const {colors} = useTheme();
+  const insets = useSafeAreaInsets();
+
   let [headlines, setHeadlines] = useState([]);
   let [refreshing, setRefreshing] = useState(false);
 
@@ -44,17 +48,30 @@ function HomeScreen({ navigation }) {
   }, []);
 
   return (
-    <FlatList
-      data={headlines}
-      style={[styles.list]}
-      renderItem={({ item }) => (
-        <LargeNewsItem item={item} navigation={navigation} />
-      )}
-      ListFooterComponent={<View style={{height: 16}} />}
-      refreshing={refreshing}
-      onRefresh={fetchHeadlines}
-      keyExtractor={item => item.id}
-    />
+    <View style={{ flex: 1 }}>
+      <View
+        style={[
+          styles.header,
+          {
+            paddingTop: insets.top,
+          }
+        ]}
+      >
+        <NativeText>(header)</NativeText>
+      </View>
+      
+      <FlatList
+        data={headlines}
+        style={[styles.list]}
+        renderItem={({ item }) => (
+          <LargeNewsItem item={item} navigation={navigation} />
+        )}
+        ListFooterComponent={<View style={{height: 16}} />}
+        refreshing={refreshing}
+        onRefresh={fetchHeadlines}
+        keyExtractor={item => item.id}
+      />
+    </View>
   );
 }
 
