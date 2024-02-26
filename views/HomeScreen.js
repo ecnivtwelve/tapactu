@@ -150,7 +150,7 @@ function HomeScreen({ navigation }) {
         >
           <Animated.Text heading="h2" style={{
             fontSize: scrollList.interpolate({
-              inputRange: [-200, 10, 40, 2000],
+              inputRange: [-200, 10, 80, 2000],
               outputRange: [24, 21, 18, 18],
             }),
             fontFamily: 'Merriweather-Bold',
