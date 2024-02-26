@@ -1,31 +1,34 @@
 import React, { useEffect, useState } from 'react';
 import { View, ScrollView, Button, FlatList, RefreshControl, StyleSheet, Image, Pressable, Touchable, TouchableOpacity, ActivityIndicator } from 'react-native';
-
 import {
   NativeList,
   NativeItem,
   NativeText,
 } from "../components/NativeTableView";
-
 import { GetHeadlines } from "../fetch/GetNews";
-
 import { useTheme } from "@react-navigation/native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Settings } from "lucide-react-native";
-
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
 import { Newspaper, SwatchBook, Plus } from 'lucide-react-native';
 
 function HomeScreen({ navigation }) {
   const { colors } = useTheme();
   const insets = useSafeAreaInsets();
+  const [name, setName] = useState("");
 
   let [headlines, setHeadlines] = useState([]);
   let [refreshing, setRefreshing] = useState(false);
   let [loading, setLoading] = useState(false);
 
   let [date, setDate] = useState("");
+
+  const getName = async () => {
+    let name = await AsyncStorage.getItem("name");
+    setName(name);
+  };
+
+
 
   const TodayDate = () => {
     let date = new Date();
@@ -42,6 +45,7 @@ function HomeScreen({ navigation }) {
 
   const fetchHeadlines = async () => {
     setLoading(true);
+    getName();
     AsyncStorage.getItem('sources').then((data) => {
       if (data) {
         let sources = JSON.parse(data);
@@ -96,7 +100,7 @@ function HomeScreen({ navigation }) {
         <View
           style={{ flexDirection: "column", justifyContent: "space-between" }}
         >
-          <NativeText heading="h1">Bonjour, Vince !</NativeText>
+          <NativeText heading="h1">Bonjour, {name}</NativeText>
           <NativeText style={{ fontSize: 16, opacity: 0.6 }}>{date}</NativeText>
         </View>
         <TouchableOpacity
