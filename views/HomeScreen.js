@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, ScrollView, Button, FlatList, RefreshControl, StyleSheet, Image, Pressable, Touchable, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { Animated, View, ScrollView, Button, FlatList, RefreshControl, StyleSheet, Image, Pressable, Touchable, TouchableOpacity, ActivityIndicator } from 'react-native';
 
 import {
   NativeList,
@@ -8,6 +8,8 @@ import {
 } from "../components/NativeTableView";
 
 import { GetHeadlines } from "../fetch/GetNews";
+
+const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
 import { useTheme } from "@react-navigation/native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -26,6 +28,18 @@ function HomeScreen({ navigation }) {
   let [loading, setLoading] = useState(false);
 
   let [date, setDate] = useState("");
+
+  const scrollList = new Animated.Value(0);
+
+  const [scrolled, setScrolled] = useState(false);
+
+  scrollList.addListener(({ value }) => {
+    if (value > 1) {
+      setScrolled(true);
+    } else {
+      setScrolled(false);
+    }
+  });
 
   const TodayDate = () => {
     let date = new Date();
@@ -90,18 +104,53 @@ function HomeScreen({ navigation }) {
             justifyContent: "space-between",
             alignItems: "center",
             paddingBottom: 10,
-          },
+            borderBottomColor: colors.border + '00',
+            borderBottomWidth: 0.5,
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            zIndex: 100,
+          }
         ]}
       >
+        <Animated.View
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: colors.card,
+            borderBottomColor: colors.border,
+            borderBottomWidth: 0.5,
+            opacity: scrollList.interpolate({
+              inputRange: [-200, 20, 60, 2000],
+              outputRange: [0, 0, 1, 1],
+            }),
+          }}
+        />
         <View
           style={{ flexDirection: "column", justifyContent: "space-between" }}
         >
-          <NativeText heading="h2" style={{ fontSize: 22, fontFamily: 'Merriweather-Bold' }}>
+          <Animated.Text heading="h2" style={{
+            fontSize: scrollList.interpolate({
+              inputRange: [-200, 10, 40, 2000],
+              outputRange: [26, 21, 18, 18],
+            }),
+            fontFamily: 'Merriweather-Bold',
+            color: colors.text,
+          }}>
             Bonjour, Vince !
-          </NativeText>
-          <NativeText style={{ fontSize: 15, opacity: 0.6 }}>
+          </Animated.Text>
+          <Animated.Text style={{
+            fontSize: 15,
+            fontFamily: 'MerriweatherSans-Medium',
+            opacity: 0.6,
+            color: colors.text,
+          }}>
             {date}
-          </NativeText>
+          </Animated.Text>
         </View>
         <TouchableOpacity
           style={{
@@ -121,9 +170,11 @@ function HomeScreen({ navigation }) {
         </TouchableOpacity>
       </View>
 
-      <FlatList
+      <AnimatedFlatList
         data={headlines}
-        style={[styles.list]}
+        style={[styles.list, {
+          paddingTop: insets.top + 70,
+        }]}
         renderItem={({ item }) => (
           <LargeNewsItem item={item} navigation={navigation} />
         )}
@@ -131,7 +182,13 @@ function HomeScreen({ navigation }) {
         ListEmptyComponent={<EmptyTapActu sources={sources} loading={loading} navigation={navigation} />}
         refreshing={refreshing}
         onRefresh={fetchHeadlines}
+        progressViewOffset={insets.top + 70}
         keyExtractor={(item) => item.id}
+        scrollEventThrottle={16}
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { y: scrollList } } }],
+          { useNativeDriver: false }
+        )}
       />
     </View>
   );
