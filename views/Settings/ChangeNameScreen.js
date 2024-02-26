@@ -6,13 +6,22 @@ import {
   NativeList,
 } from "../../components/NativeTableView";
 import { Settings, ChevronRight, CircleUserRound } from "lucide-react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function ChangeNameScreen({ navigation }) {
   const [name, setName] = React.useState("");
 
-  const handleNameChange = () => {
-    navigation.navigate("Settings");
+  const handleNameChange = async () => {
+    await AsyncStorage.setItem("name", name);
+    console.log("Name changed to", name);
+    navigation.goBack();
   };
+
+  React.useEffect(() => {
+    AsyncStorage.getItem("name").then((data) => {
+      setName(data);
+    });
+  }, []);
   return (
     <ScrollView style={{ flex: 1 }} contentInsetAdjustmentBehavior="automatic">
       <NativeList inset>

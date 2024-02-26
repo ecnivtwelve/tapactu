@@ -6,7 +6,6 @@ import {
   NativeItem,
   NativeText,
 } from "../components/NativeTableView";
-
 import { GetHeadlines } from "../fetch/GetNews";
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
@@ -14,14 +13,13 @@ const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 import { useTheme } from "@react-navigation/native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Settings } from "lucide-react-native";
-
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
 import { Newspaper, SwatchBook, Plus } from 'lucide-react-native';
 
 function HomeScreen({ navigation }) {
   const { colors } = useTheme();
   const insets = useSafeAreaInsets();
+  const [name, setName] = useState("");
 
   let [headlines, setHeadlines] = useState([]);
   let [refreshing, setRefreshing] = useState(false);
@@ -56,6 +54,7 @@ function HomeScreen({ navigation }) {
 
   const fetchHeadlines = async () => {
     setLoading(true);
+    getName();
     AsyncStorage.getItem('sources').then((data) => {
       if (data) {
         let sources = JSON.parse(data);
