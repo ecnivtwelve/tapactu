@@ -159,7 +159,7 @@ function HomeScreen({ navigation }) {
             Bonjour, {name} !
           </Animated.Text>
           <Animated.Text style={{
-            fontSize: 15,
+            fontSize: 14.75,
             fontFamily: 'MerriweatherSans-Medium',
             opacity: 0.6,
             color: colors.text,

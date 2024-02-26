@@ -102,11 +102,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 32,
   },
   buttonText: {
-    fontSize: 16,
+    fontSize: 15,
   },
 
   title: {
-    fontSize: 21,
+    fontSize: 20,
     lineHeight: 27,
     fontFamily: 'Merriweather-Bold',
     marginHorizontal: 16,
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
   },
 
   description: {
-    fontSize: 16,
+    fontSize: 15,
     lineHeight: 20,
     marginHorizontal: 16,
     opacity: 0.6,
