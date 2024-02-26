@@ -8,6 +8,8 @@ import {
 } from "../components/NativeTableView";
 import { GetHeadlines } from "../fetch/GetNews";
 
+import { BlurView } from 'expo-blur';
+
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
 import { useTheme } from "@react-navigation/native";
@@ -18,6 +20,7 @@ import { Newspaper, SwatchBook, Plus } from 'lucide-react-native';
 
 function HomeScreen({ navigation }) {
   const { colors } = useTheme();
+  const dark = useTheme().dark;
   const insets = useSafeAreaInsets();
   const [name, setName] = useState("");
 
@@ -125,7 +128,7 @@ function HomeScreen({ navigation }) {
             left: 0,
             right: 0,
             bottom: 0,
-            backgroundColor: colors.card,
+            backgroundColor: colors.card + '88',
             borderBottomColor: colors.border,
             borderBottomWidth: 0.5,
             opacity: scrollList.interpolate({
@@ -133,14 +136,22 @@ function HomeScreen({ navigation }) {
               outputRange: [0, 0, 1, 1],
             }),
           }}
-        />
+        >
+          <BlurView
+            tint={dark ? "dark" : "light"}
+            intensity={100}
+            style={{
+              flex: 1,
+            }}
+          />
+        </Animated.View>
         <View
           style={{ flexDirection: "column", justifyContent: "space-between" }}
         >
           <Animated.Text heading="h2" style={{
             fontSize: scrollList.interpolate({
               inputRange: [-200, 10, 40, 2000],
-              outputRange: [26, 21, 18, 18],
+              outputRange: [24, 21, 18, 18],
             }),
             fontFamily: 'Merriweather-Bold',
             color: colors.text,
@@ -182,7 +193,7 @@ function HomeScreen({ navigation }) {
         renderItem={({ item }) => (
           <LargeNewsItem item={item} navigation={navigation} />
         )}
-        ListFooterComponent={<View style={{height: 16}} />}
+        ListFooterComponent={<View style={{height: 120}} />}
         ListEmptyComponent={<EmptyTapActu sources={sources} loading={loading} navigation={navigation} />}
         refreshing={refreshing}
         onRefresh={fetchHeadlines}

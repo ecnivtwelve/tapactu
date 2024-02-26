@@ -68,9 +68,12 @@ const GetMultipleFeeds = async (sources) => {
 const GetHeadlines = async (sources, max) => {
   return JoinMultipleFeeds(sources, max)
     .then((data) => {
-      // sort by id
+      // sort by date
       data.sort((a, b) => {
-        return new Date(b.id) - new Date(a.id);
+        let aDate = new Date(a.published);
+        let bDate = new Date(b.published);
+
+        return bDate - aDate;
       });
 
       return data;
