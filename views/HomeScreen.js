@@ -27,6 +27,11 @@ function HomeScreen({ navigation }) {
 
   let [date, setDate] = useState("");
 
+  const getName = async () => {
+    let name = await AsyncStorage.getItem("name");
+    setName(name);
+  };
+
   const scrollList = new Animated.Value(0);
 
   const [scrolled, setScrolled] = useState(false);
