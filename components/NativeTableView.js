@@ -122,22 +122,27 @@ function NativeText(props) {
     "h1": {
       fontSize: 24,
       fontWeight: 600,
+      fontFamily: 'MerriweatherSans-Semibold',
     },
     "h2": {
       fontSize: 19,
       fontWeight: 600,
+      fontFamily: 'MerriweatherSans-Semibold',
     },
     "h3": {
       fontSize: 18,
       fontWeight: 600,
+      fontFamily: 'MerriweatherSans-Semibold',
     },
     "h4": {
       fontSize: 16,
       fontWeight: 600,
+      fontFamily: 'MerriweatherSans-Semibold',
     },
     "subtitle1": {
       fontSize: 13,
       fontWeight: 500,
+      fontFamily: 'MerriweatherSans-Medium',
       opacity: 0.6,
     },
     "subtitle2": {
@@ -171,6 +176,7 @@ function NativeText(props) {
       style={[
         {
           color: colors.text,
+          fontFamily: 'MerriweatherSans-Regular',
         },
         headingStyles[heading],
         style,
