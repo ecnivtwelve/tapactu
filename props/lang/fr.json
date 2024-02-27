@@ -36,6 +36,7 @@
   "addsource_unavailable_title": "Flux non disponible",
   "addsource_unavailable_description": "Le flux que vous essayez d'ajouter n'est pas disponible pour le moment. Veuillez réessayer plus tard.",
   "addsource_popular_flux": "Flux populaires",
+  "addsource_tech_flux": "Flux technologiques",
   "addsource_use_url": "Utiliser une URL",
   "addsource_search_placeholder": "Rechercher ou insérer une URL",
 

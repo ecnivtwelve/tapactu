@@ -36,6 +36,7 @@
   "addsource_unavailable_title": "Feed unavailable",
   "addsource_unavailable_description": "The feed you are trying to add is not available at the moment. Please try again later.",
   "addsource_popular_flux": "Popular feeds",
+  "addsource_tech_flux": "Tech feeds",
   "addsource_use_url": "Use URL",
   "addsource_search_placeholder": "Search or enter a URL",
   

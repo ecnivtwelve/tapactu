@@ -30,6 +30,8 @@ function SourcesScreen({ navigation }) {
     AsyncStorage.getItem('sources').then((data) => {
       if (data) {
         setSources(JSON.parse(data));
+        console.log('sources fetched');
+        console.log(JSON.parse(data));
       }
     });
   }

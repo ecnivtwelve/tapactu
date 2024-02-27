@@ -1,12 +1,13 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { Alert, View, Text, ScrollView, Platform, StatusBar, Image, TextInput, ActivityIndicator } from 'react-native';
 import { NativeList, NativeItem, NativeText } from '../components/NativeTableView';
 
-import { Search } from 'lucide-react-native';
+import { Search, AlertCircle } from 'lucide-react-native';
 
 import * as rssParser from 'react-native-rss-parser';
 
 import PopularFeeds from '../data/PopularFeeds.json';
+import Techfeeds from '../data/TechFeeds.json';
 
 import { useTheme } from '@react-navigation/native';
 
@@ -18,14 +19,28 @@ function AddSourceScreen({ navigation }) {
   const {colors} = useTheme();
 
   const [feedsList, setFeedsList] = React.useState([]);
+  const [techList, setTechlist] = React.useState([]);
 
   const [isURL, setIsURL] = React.useState(false);
   const [searchTerm, setSearchTerm] = React.useState('');
+  const [sources, setSources] = useState([]);
 
   const [loading, setLoading] = React.useState(false);
 
+  const fetchSources = async () => {
+    AsyncStorage.getItem('sources').then((data) => {
+      if (data) {
+        setSources(JSON.parse(data));
+        console.log('sources', JSON.parse(data));
+      }
+    });
+  }
+
   React.useEffect(() => {
     setFeedsList(PopularFeeds);
+    setTechlist(Techfeeds);
+    fetchSources();
+
   }, []);
 
   // add loading indicator in header
@@ -57,7 +72,6 @@ function AddSourceScreen({ navigation }) {
 
   const addFeed = (url) => {
     setLoading(true);
-    // check if feed is available
 
     return fetch(url)
       .then(response => response.text())
@@ -157,6 +171,34 @@ function AddSourceScreen({ navigation }) {
             </NativeText>
             <NativeText heading="p2">
               {feed.url}
+            </NativeText>
+          </NativeItem>
+        ))}
+      </NativeList>
+      )}
+      { techList.length > 0 && (
+      <NativeList inset header={t('addsource_tech_flux')}>
+        {techList.map((tech, index) => (
+          <NativeItem
+            key={index}
+            onPress={() => addFeed(tech.url)}
+            Trailing={
+              sources.includes(tech.title) && (
+                <AlertCircle size={24} color="green" />
+              )
+            }
+            leading={
+              <Image  
+                source={{ uri: 'https://besticon-demo.herokuapp.com/icon?url=' + tech.url + '&size=48' }}
+                style={{ width: 24, height: 24, borderRadius: 5 }}
+              />
+            }
+          >
+            <NativeText heading="h4">
+              {tech.title}
+            </NativeText>
+            <NativeText heading="p2">
+              {tech.url}
             </NativeText>
           </NativeItem>
         ))}
