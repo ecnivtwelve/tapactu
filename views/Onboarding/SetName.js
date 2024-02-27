@@ -41,7 +41,7 @@ function SetNameScreen({ navigation }) {
 
   function nextStep() {
       if (name.trim().length < 1) {
-        Alert.alert('Erreur', 'Veuillez entrer votre prénom.');
+        Alert.alert(t('global_error'), t('welcome_whats_your_cta'));
 
         return;
       }
