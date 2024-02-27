@@ -18,8 +18,11 @@ function BookmarkScreen({ navigation }) {
       try {
         const value = await AsyncStorage.getItem('bookmarks');
         if (value !== null) {
-          setBookmarks(JSON.parse(value));
-          setOriginalBookmarks(JSON.parse(value));
+          // reverse the array to show the latest first
+          let res = JSON.parse(value)
+
+          setBookmarks([...res].reverse());
+          setOriginalBookmarks([...res].reverse());
         }
       } catch (e) {
         console.error(e);
@@ -61,7 +64,7 @@ function BookmarkScreen({ navigation }) {
 
   return (
     <ScrollView
-      style={{ flex: 1 }}
+      style={{ flex: 1, backgroundColor: colors.card }}
       contentInsetAdjustmentBehavior='automatic'
     >
       { bookmarks.length === 0 && (
