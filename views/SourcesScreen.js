@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react';
-import { Alert, View, Text, ScrollView, TouchableOpacity, Image } from 'react-native';
+import { Alert, Platform, View, Text, ScrollView, TouchableOpacity, Image } from 'react-native';
 import { NativeList, NativeItem, NativeText } from '../components/NativeTableView';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -57,7 +57,13 @@ function SourcesScreen({ navigation }) {
       contentInsetAdjustmentBehavior='automatic'
     >
       { sources.length > 0 && (
-        <NativeList>
+        <NativeList
+          style={[
+            Platform.OS === 'ios' && {
+              marginTop: -16,
+            }
+          ]}
+        >
           {sources.map((source, index) => (
             <NativeItem
               key={index}

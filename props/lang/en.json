@@ -46,6 +46,7 @@
   "managesource_action_remove_description": "Remove this source from your subscriptions",
   
   "details_read_on": "Read on",
+  "details_saved": "Saved",
   
   "settings_change_name": "Change name",
   "settings_change_name_desc": "Change your username",
@@ -67,5 +68,8 @@
   "welcome_whats_your_cta": "Enter your name",
   "welcome_whats_your_detail": "You can change this setting at any time in the app's settings.",
   "welcome_welcome": "Welcome",
-  "welcome_lets_go": "Let's go!"
+  "welcome_lets_go": "Let's go!",
+
+  "saved_no_saved": "No saved articles",
+  "saved_search": "Search",
 }

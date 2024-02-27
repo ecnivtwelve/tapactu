@@ -26,11 +26,13 @@ const headerStyles = {
   },
   headerLargeTitleStyle: {
     fontFamily: 'Merriweather-Bold',
+    fontSize: 30,
   },
   headerBackTitleStyle: {
     fontFamily: 'MerriweatherSans-Regular',
     fontSize: 16,
   },
+  headerTitleAlign: 'center',
 };
 
 function TabNavigation() {
@@ -80,21 +82,10 @@ function TabNavigation() {
         }}
       />
       <Tab.Screen
-        name="Search"
-        component={require('./views/SearchScreen').default}
-        options={{
-          headerTitle: t('menu_search'),
-          tabBarLabel: t('menu_search'),
-          tabBarIcon: ({ color }) => (
-            <Search size={24} color={color} />
-          ),
-        }}
-      />
-      <Tab.Screen
         name="Bookmarks"
-        component={require('./views/BookmarksScreen').default}
+        component={BookmarksNavigator}
         options={{
-          headerTitle: t('menu_saved'),
+          headerShown: false,
           tabBarLabel: t('menu_saved'),
           tabBarIcon: ({ color }) => (
             <Bookmark size={24} color={color} />
@@ -104,6 +95,31 @@ function TabNavigation() {
     </Tab.Navigator>
   );
 }
+
+const BookmarksNavigator = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        ...headerStyles
+      }}
+    >
+      <Stack.Screen
+        name='BookmarksInset'
+        component={require('./views/BookmarksScreen').default}
+        options={{
+          headerTitle: t('menu_saved'),
+          headerLargeTitle: true,
+        }}
+      />
+      <Stack.Screen
+        name='ArticleInset'
+        component={require('./views/DetailsScreen').default}
+        options={{ headerTitle: t('menu_article') }}
+      />
+    </Stack.Navigator>
+  )
+}
+
 
 const Stack = createNativeStackNavigator();
 
