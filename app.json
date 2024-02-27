@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "expo-ios-native-template",
-    "slug": "expo-ios-native-template",
+    "name": "tapactu",
+    "slug": "tapactu",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

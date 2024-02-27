@@ -1,11 +1,7 @@
-# expo-ios-native-template
-Template for an iOS native-like Expo app
+# tapactu
+Open-source RSS reader for iOS and Android written in **React Native** and optimised for French media outlet feeds.
 
-## Features
-- 🌚 Dark mode included and set with native iOS colors
-- ✨ iOS TableView <NativeList> <NativeItem> and <NativeText> components included
-- 💅 [React Navigation](https://reactnavigation.org/) pre-configured
-- 📦 Minimal setup with everything ready
+> btw Tapactu might be a codename (or not), idk yet
 
 ## Installation
 - Clone the template repository
