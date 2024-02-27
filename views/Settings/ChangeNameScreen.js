@@ -11,6 +11,8 @@ import { useTheme } from "@react-navigation/native";
 
 import { User2, Check } from "lucide-react-native";
 
+import t from '../../props/NativeLanguage';
+
 function ChangeNameScreen({ navigation }) {
   const { colors } = useTheme();
   const [name, setName] = React.useState("");
@@ -49,7 +51,7 @@ function ChangeNameScreen({ navigation }) {
             paddingVertical: 13,
             flex: 1,
           }}
-          placeholder="Votre nom"
+          placeholder={t("chgname_name_placeholder")}
           value={name}
           onChangeText={(text) => setName(text)}
         />
@@ -77,7 +79,7 @@ function ChangeNameScreen({ navigation }) {
             fontFamily: 'MerriweatherSans-Medium',
           }}
         >
-          Confirmer
+          {t('global_confirm')}
         </Text>
         <Check size={24} color={colors.background} />
       </TouchableOpacity>

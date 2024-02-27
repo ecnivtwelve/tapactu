@@ -7,6 +7,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useTheme } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import t from '../../props/NativeLanguage';
+
 import { ArrowRight, Check } from 'lucide-react-native';
 
 function SetNameScreen({ navigation }) {
@@ -93,6 +95,7 @@ function SetNameScreen({ navigation }) {
         <Animated.View
           style={{
             flex: 1,
+            width: '100%',
             paddingHorizontal: 20,
             gap: 10,
 
@@ -127,8 +130,8 @@ function SetNameScreen({ navigation }) {
               color: "#000",
             }}
           >
-            Comment vous {`\n`}
-            vous appellez ?
+            {t('welcome_whats_your_1')} {`\n`}
+            {t('welcome_whats_your_2')}
           </Animated.Text>
 
           <Text
@@ -138,7 +141,7 @@ function SetNameScreen({ navigation }) {
               fontFamily: 'MerriweatherSans-Medium',
             }}
           >
-            Cette application utilise votre prénom pour personnaliser votre expérience.
+            {t('welcome_whats_your_desc')}
           </Text>
 
           <View
@@ -162,7 +165,7 @@ function SetNameScreen({ navigation }) {
                 padding: 20,
                 paddingVertical: 12,
               }}
-              placeholder="Votre prénom"
+              placeholder={t('welcome_whats_your_cta')}
               placeholderTextColor="#00000055"
               autoFocus={true}
               value={name}
@@ -191,7 +194,7 @@ function SetNameScreen({ navigation }) {
                   fontFamily: 'MerriweatherSans-Medium',
                 }}
               >
-                Confirmer
+                {t('global_confirm')}
               </Text>
               <Check size={24} color="#f7e4ba" />
             </TouchableOpacity>
@@ -203,7 +206,7 @@ function SetNameScreen({ navigation }) {
               fontFamily: 'MerriweatherSans-Regular',
             }}
           >
-            Vous pouvez changer ce paramètre à tout moment dans les paramètres de l'application.
+            {t('welcome_whats_your_detail')}
           </Text>
 
         </Animated.View>

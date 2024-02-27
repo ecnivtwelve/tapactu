@@ -4,6 +4,8 @@ import { NativeList, NativeItem, NativeText } from '../components/NativeTableVie
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import t from '../props/NativeLanguage';
+
 import { Plus } from 'lucide-react-native';
 
 import { useTheme } from '@react-navigation/native';
@@ -77,7 +79,9 @@ function SourcesScreen({ navigation }) {
 
       { sources.length === 0 && (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingVertical: 16 }}>
-          <NativeText heading="p2">Aucune source</NativeText>
+          <NativeText heading="p2">
+            {t('sources_no_sources')}
+          </NativeText>
         </View>
       )}
     </ScrollView>

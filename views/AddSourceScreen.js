@@ -12,6 +12,8 @@ import { useTheme } from '@react-navigation/native';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import t from '../props/NativeLanguage';
+
 function AddSourceScreen({ navigation }) {
   const {colors} = useTheme();
 
@@ -78,7 +80,7 @@ function AddSourceScreen({ navigation }) {
         });
       })
       .catch((error) => {
-        Alert.alert('Flux non disponible', 'Le flux n\'est pas disponible');
+        Alert.alert(t('addsource_unavailable_title'), t('addsource_unavailable_description'));
       });
   }
 
@@ -103,7 +105,7 @@ function AddSourceScreen({ navigation }) {
       >
         <Search size={24} color={colors.text + '80'} />
         <TextInput
-          placeholder='Rechercher ou insérer une URL'
+          placeholder={t('addsource_search_placeholder')}
           placeholderTextColor={colors.text + '80'}
           style={{
             fontFamily: 'MerriweatherSans-Regular',
@@ -128,7 +130,7 @@ function AddSourceScreen({ navigation }) {
             }
           >
             <NativeText heading="h4">
-              Utiliser cette URL
+              {t('addsource_use_url')}
             </NativeText>
             <NativeText heading="p2">
               {searchTerm}
@@ -138,7 +140,7 @@ function AddSourceScreen({ navigation }) {
       )}
 
       { feedsList.length > 0 && (
-      <NativeList inset header='Flux populaires'>
+      <NativeList inset header={t('addsource_popular_flux')}>
         {feedsList.map((feed, index) => (
           <NativeItem
             key={index}

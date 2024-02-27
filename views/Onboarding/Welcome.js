@@ -5,6 +5,8 @@ import { NativeText } from '../../components/NativeTableView';
 import { useTheme } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import t from '../../props/NativeLanguage';
+
 import { ArrowRight } from 'lucide-react-native';
 
 function WelcomeScreen({ navigation }) {
@@ -62,6 +64,7 @@ function WelcomeScreen({ navigation }) {
       <Animated.View
         style={{
           flex: 1,
+          width: '100%',
           paddingHorizontal: 20,
           gap: 10,
 
@@ -96,8 +99,8 @@ function WelcomeScreen({ navigation }) {
             color: "#000",
           }}
         >
-          Vos actualités {`\n`}
-          à votre manière
+          {t('welcome_your_news')} {`\n`}
+          {t('welcome_your_way')}
         </Animated.Text>
 
         <Text
@@ -107,7 +110,7 @@ function WelcomeScreen({ navigation }) {
             fontFamily: 'MerriweatherSans-Medium',
           }}
         >
-          Une application d'actualités personnalisée pour vous, facile, et intuitive.
+          {t('welcome_your_news_desc')}
         </Text>
 
           <TouchableOpacity
@@ -130,7 +133,7 @@ function WelcomeScreen({ navigation }) {
                 fontFamily: 'MerriweatherSans-Medium',
               }}
             >
-              Commencer
+              {t('global_start')}
             </Text>
             <ArrowRight size={24} color="#f7e4ba" />
           </TouchableOpacity>

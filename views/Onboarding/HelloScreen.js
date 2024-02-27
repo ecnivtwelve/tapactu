@@ -7,6 +7,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ArrowRight } from 'lucide-react-native';
 
+import t from '../../props/NativeLanguage';
+
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function HelloScreen({ route, navigation }) {
@@ -103,7 +105,7 @@ function HelloScreen({ route, navigation }) {
             color: "#000",
           }}
         >
-          Bienvenue, {`\n`}
+          {t('welcome_welcome')}, {`\n`}
           {name} !
         </Animated.Text>
 
@@ -127,7 +129,7 @@ function HelloScreen({ route, navigation }) {
                 fontFamily: 'MerriweatherSans-Medium',
               }}
             >
-              C'est parti !
+              {t('welcome_lets_go')}
             </Text>
             <ArrowRight size={24} color="#f7e4ba" />
           </TouchableOpacity>

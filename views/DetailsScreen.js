@@ -7,6 +7,8 @@ import * as WebBrowser from 'expo-web-browser';
 
 import { ExternalLink } from 'lucide-react-native';
 
+import t from '../props/NativeLanguage';
+
 function DetailsScreen({ route, navigation }) {
   const { item } = route.params;
 
@@ -82,7 +84,7 @@ function DetailsScreen({ route, navigation }) {
       >
         <ExternalLink size={24} strokeWidth={2.2} color={colors.background} />
         <NativeText style={[styles.buttonText, { color: colors.background }]} numberOfLines={1} ellipsizeMode='tail'>
-          Lire sur {item.source.links[0].url.split('/')[2].split('/')[0].split('www.')[1]}
+          {t('details_read_on')} {item.source.links[0].url.split('/')[2].split('/')[0].split('www.')[1]}
         </NativeText>
       </TouchableOpacity>
     </ScrollView>

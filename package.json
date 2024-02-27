@@ -16,6 +16,7 @@
     "expo": "~49.0.15",
     "expo-blur": "~12.4.1",
     "expo-font": "~11.4.0",
+    "expo-localization": "~14.3.0",
     "expo-navigation-bar": "~2.3.0",
     "expo-splash-screen": "~0.20.5",
     "expo-status-bar": "~1.6.0",

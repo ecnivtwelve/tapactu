@@ -12,10 +12,13 @@ import { GetHeadlines } from "../fetch/GetNews";
 
 import { BlurView } from 'expo-blur';
 
+import t, { getLocale } from '../props/NativeLanguage';
+
 import moment from 'moment';
 import 'moment/locale/fr';
+import 'moment/locale/en-gb';
 
-moment.locale('fr');
+moment.locale(getLocale());
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 const AnimatedVirtualizedList = Animated.createAnimatedComponent(VirtualizedList);
@@ -88,7 +91,7 @@ function HomeScreen({ navigation }) {
       month: "long",
       day: "numeric",
     };
-    setDate(date.toLocaleDateString("fr-FR", options));
+    setDate(date.toLocaleDateString(getLocale(), options));
   };
 
   const [sources, setSources] = React.useState([]);
@@ -225,7 +228,7 @@ function HomeScreen({ navigation }) {
               ellipsizeMode="tail"
             >
               {
-                name ? `Bonjour, ${name} !` : "Bonjour !"
+                name ? `${t('homescreen_welcome')}, ${name} !` : `${t('homescreen_welcome')} !`
               }
             </Animated.Text>
             <Animated.Text style={{
@@ -292,10 +295,10 @@ const EmptyTapActu = ({ sources, loading, navigation }) => {
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginVertical: 16, gap: 4 }}>
         <SwatchBook size={36} color={colors.text} />
         <NativeText heading="h2" style={{textAlign: 'center', marginTop: 8}}>
-          Aucune source
+          {t('homescreen_no_sources')}
         </NativeText>
         <NativeText heading="p2" style={{textAlign: 'center'}}>
-          Commencez par ajouter une source pour obtenir des actualités.
+          {t('homescreen_no_sources_desc')}
         </NativeText>
 
         <TouchableOpacity
@@ -315,7 +318,7 @@ const EmptyTapActu = ({ sources, loading, navigation }) => {
         >
           <Plus size={24} color={colors.background} />
           <NativeText style={{ color: colors.background }}>
-            Ajouter une source
+            {t('homescreen_no_sources_cta')}
           </NativeText>
         </TouchableOpacity>
       </View>
@@ -358,10 +361,10 @@ const EmptyTapActu = ({ sources, loading, navigation }) => {
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginVertical: 16, gap: 4 }}>
       <Newspaper size={36} color={colors.text} />
       <NativeText heading="h2" style={{textAlign: 'center', marginTop: 8}}>
-        Aucune actualité
+        {t('homescreen_no_news')}
       </NativeText>
       <NativeText heading="p2" style={{textAlign: 'center'}}>
-        Aucune actualité n'est disponible pour le moment.
+        {t('homescreen_no_news_desc')}
       </NativeText>
     </View>
   );

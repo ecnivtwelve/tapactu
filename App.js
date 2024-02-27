@@ -10,6 +10,8 @@ import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 SplashScreen.preventAutoHideAsync();
 
+import t from './props/NativeLanguage';
+
 import * as NavigationBar from 'expo-navigation-bar';
 
 import { Newspaper, SwatchBook, Search, Bookmark } from 'lucide-react-native';
@@ -59,8 +61,8 @@ function TabNavigation() {
         name="Home"
         component={require('./views/HomeScreen').default}
         options={{
-          headerTitle: 'À la une',
-          tabBarLabel: 'À la une',
+          headerTitle: t('menu_home'),
+          tabBarLabel: t('menu_home'),
           tabBarIcon: ({ color }) => (
             <Newspaper size={24} color={color} />
           ),
@@ -71,7 +73,7 @@ function TabNavigation() {
         name="Sources"
         component={require('./views/SourcesScreen').default}
         options={{
-          tabBarLabel: 'Sources',
+          tabBarLabel: t('menu_sources'),
           tabBarIcon: ({ color }) => (
             <SwatchBook size={24} color={color} />
           ),
@@ -81,8 +83,8 @@ function TabNavigation() {
         name="Search"
         component={require('./views/SearchScreen').default}
         options={{
-          headerTitle: 'Recherche',
-          tabBarLabel: 'Recherche',
+          headerTitle: t('menu_search'),
+          tabBarLabel: t('menu_search'),
           tabBarIcon: ({ color }) => (
             <Search size={24} color={color} />
           ),
@@ -92,8 +94,8 @@ function TabNavigation() {
         name="Bookmarks"
         component={require('./views/BookmarksScreen').default}
         options={{
-          headerTitle: 'Enregistrés',
-          tabBarLabel: 'Enregistrés',
+          headerTitle: t('menu_saved'),
+          tabBarLabel: t('menu_saved'),
           tabBarIcon: ({ color }) => (
             <Bookmark size={24} color={color} />
           ),
@@ -115,12 +117,12 @@ const SettingsNavigation = () => {
       <Stack.Screen
         name='SettingsMenu'
         component={require('./views/Settings/SettingsScreen').default}
-        options={{ headerTitle: 'Paramètres'}}
+        options={{ headerTitle: t('menu_settings')}}
       />
       <Stack.Screen
         name='ChangeName'
         component={require('./views/Settings/ChangeNameScreen').default}
-        options={{ headerTitle: 'Changer de nom'}}
+        options={{ headerTitle: t('menu_chg_name')}}
       />
     </Stack.Navigator>
   )
@@ -167,13 +169,13 @@ const Navigation = () => {
       <Stack.Screen
         name='Article'
         component={require('./views/DetailsScreen').default}
-        options={{ headerTitle: 'Article' }}
+        options={{ headerTitle: t('menu_article') }}
       />
       <Stack.Screen
         name='AddSource'
         component={require('./views/AddSourceScreen').default}
         options={{
-          headerTitle: 'Ajouter une source',
+          headerTitle: t('menu_add_source'),
           presentation: 'modal',
         }}
       />
@@ -181,7 +183,7 @@ const Navigation = () => {
         name='ManageSource'
         component={require('./views/Source/ManageSource').default}
         options={{
-          headerTitle: 'Gérer la source',
+          headerTitle: t('menu_manage_source'),
           presentation: 'modal',
         }}
       />

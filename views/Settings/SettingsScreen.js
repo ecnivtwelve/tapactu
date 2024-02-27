@@ -8,6 +8,8 @@ import packagejson from '../../package.json';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import t from '../../props/NativeLanguage';
+
 function SettingsScreen({ navigation }) {
     const insets = useSafeAreaInsets();
     const { colors } = useTheme();
@@ -47,10 +49,10 @@ function SettingsScreen({ navigation }) {
             }}
           >
             <NativeText heading="h4">
-              Changer de nom
-              </NativeText>
+              {t('settings_change_name')}
+            </NativeText>
             <NativeText heading="p2">
-              Modifier votre nom d'utilisateur
+              {t('settings_change_name_desc')}
             </NativeText>
           </NativeItem>
           <NativeItem
@@ -62,10 +64,10 @@ function SettingsScreen({ navigation }) {
             }}
           >
             <NativeText heading="h4">
-              Recommencer l'introduction
-              </NativeText>
+              {t('settings_restart_intro')}
+            </NativeText>
             <NativeText heading="p2">
-              Relance l'introduction de l'app sans perdre vos données
+              {t('settings_restart_intro_desc')}
             </NativeText>
           </NativeItem>
         </NativeList>
@@ -75,14 +77,14 @@ function SettingsScreen({ navigation }) {
             leading={<Trash2 size={24} color={colors.text}/>}
             onPress={() => {
               Alert.alert(
-                "Réinitialiser l'application",
-                "Êtes-vous sûr de vouloir réinitialiser l'application ? Cette action est irréversible.",
+                t('settings_reset'),
+                t('settings_reset_confirm'),
                 [
                   {
-                    text: "Annuler",
+                    text: t('global_cancel'),
                     style: "cancel"
                   },
-                  { text: "Oui, réinitialiser", style: 'destructive', onPress: async () => {
+                  { text: t('settings_reset_confirm_yes'), style: 'destructive', onPress: async () => {
                     try {
                       await AsyncStorage.clear();
                       navigation.goBack();
@@ -96,10 +98,10 @@ function SettingsScreen({ navigation }) {
             }}
           >
             <NativeText heading="h4">
-              Réinitialiser l'application
+              {t('settings_reset')}
             </NativeText>
             <NativeText heading="p2">
-              Efface toutes vos données et réinitialise l'application
+              {t('settings_reset_desc')}
             </NativeText>
           </NativeItem>
         </NativeList>

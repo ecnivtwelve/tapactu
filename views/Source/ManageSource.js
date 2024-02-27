@@ -8,6 +8,8 @@ import { useTheme } from '@react-navigation/native';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import t from '../../props/NativeLanguage';
+
 function ManageSourceScreen({ route, navigation }) {
   const { colors } = useTheme();
   const { source, index } = route.params;
@@ -17,7 +19,7 @@ function ManageSourceScreen({ route, navigation }) {
   // change header title
   React.useLayoutEffect(() => {
     navigation.setOptions({
-      headerTitle: `Gérer la source - ${source.title.split(" - ")[0]}`,
+      headerTitle: `${t('managesource_title')} - ${source.title.split(" - ")[0]}`,
     });
   }, [navigation, source]);
 
@@ -57,7 +59,7 @@ function ManageSourceScreen({ route, navigation }) {
       </View>
 
       { source.description &&
-        <NativeList inset header='Description'>
+        <NativeList inset header={t('managesource_label_description')}>
           <NativeItem>
             <NativeText>
               {source.description}
@@ -66,16 +68,16 @@ function ManageSourceScreen({ route, navigation }) {
         </NativeList>
       }
 
-      <NativeList inset header='Actions'>
+      <NativeList inset header={t('managesource_label_actions')}>
         <NativeItem
           leading={<Trash2 size={24} color={'#FF3B30'} />}
           onPress={() => unsubscribe()}
         >
           <NativeText heading="h4">
-            Se désabonner
+            {t('managesource_action_remove')}
           </NativeText>
           <NativeText heading="p2">
-            Supprimer cette source de vos abonnements
+            {t('managesource_action_remove_description')}
           </NativeText>
         </NativeItem>
       </NativeList>
