@@ -3,8 +3,10 @@ import { View, Text, ScrollView, Image, StatusBar, Platform } from 'react-native
 import { useTheme } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { NativeItem, NativeList, NativeText } from '../../components/NativeTableView';
-import { Settings, ChevronRight, CircleUserRound, Sparkle } from "lucide-react-native";
+import { Settings, ChevronRight, CircleUserRound, Sparkle, Trash2 } from "lucide-react-native";
 import packagejson from '../../package.json';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function SettingsScreen({ navigation }) {
     const insets = useSafeAreaInsets();
@@ -64,6 +66,24 @@ function SettingsScreen({ navigation }) {
               </NativeText>
             <NativeText heading="p2">
               Relance l'introduction de l'app sans perdre vos données
+            </NativeText>
+          </NativeItem>
+        </NativeList>
+
+        <NativeList inset>
+          <NativeItem
+            leading={<Trash2 size={24} color={colors.text}/>}
+            onPress={() => {
+              AsyncStorage.clear();
+              navigation.goBack();
+              navigation.navigate("Welcome");
+            }}
+          >
+            <NativeText heading="h4">
+              Réinitialiser l'application
+            </NativeText>
+            <NativeText heading="p2">
+              Efface toutes vos données et réinitialise l'application
             </NativeText>
           </NativeItem>
         </NativeList>

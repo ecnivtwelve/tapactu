@@ -124,6 +124,9 @@ function HomeScreen({ navigation }) {
   // get sources on focus
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
+      getName();
+      TodayDate();
+
       if (sources.length == 0) {
         AsyncStorage.getItem('sources').then((data) => {
           if (data) {
@@ -200,13 +203,15 @@ function HomeScreen({ navigation }) {
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
+            flex: 1,
+            gap: 15
           }}
           onPress={() => {
             flatListRef.current.scrollToOffset({ animated: true, offset: 0 });
           }}
         >
           <View
-            style={{ flexDirection: "column", justifyContent: "space-between" }}
+            style={{ flexDirection: "column", justifyContent: "space-between", flex: 1, }}
           >
             <Animated.Text heading="h2" style={{
               fontSize: scrollSnap.interpolate({
@@ -215,8 +220,13 @@ function HomeScreen({ navigation }) {
               }),
               fontFamily: 'Merriweather-Bold',
               color: colors.text,
-            }}>
-              Bonjour, {name} !
+            }}
+              numberOfLines={1}
+              ellipsizeMode="tail"
+            >
+              {
+                name ? `Bonjour, ${name} !` : "Bonjour !"
+              }
             </Animated.Text>
             <Animated.Text style={{
               fontSize: 14.75,
@@ -277,38 +287,6 @@ function HomeScreen({ navigation }) {
 const EmptyTapActu = ({ sources, loading, navigation }) => {
   const {colors} = useTheme();
 
-  if (loading) {
-    return (
-      <View
-        style={{
-        }}
-      >
-        <SkeletonLoading
-          background={colors.border}
-          highlight={colors.card}
-        >
-          <View
-            style={{
-            }}
-          >
-            {[...Array(2)].map((_, i) => (
-              <View
-                key={i}
-                style={[
-                  LargeNewsStyles.container,
-                  {
-                    height: 343,
-                    backgroundColor: colors.card,
-                  },
-                ]}
-              />
-            ))}
-          </View>
-        </SkeletonLoading>
-      </View>
-    );
-  }
-
   if (sources.length <= 0) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginVertical: 16, gap: 4 }}>
@@ -340,6 +318,38 @@ const EmptyTapActu = ({ sources, loading, navigation }) => {
             Ajouter une source
           </NativeText>
         </TouchableOpacity>
+      </View>
+    );
+  }
+
+  if (loading) {
+    return (
+      <View
+        style={{
+        }}
+      >
+        <SkeletonLoading
+          background={colors.border}
+          highlight={colors.card}
+        >
+          <View
+            style={{
+            }}
+          >
+            {[...Array(2)].map((_, i) => (
+              <View
+                key={i}
+                style={[
+                  LargeNewsStyles.container,
+                  {
+                    height: 343,
+                    backgroundColor: colors.card,
+                  },
+                ]}
+              />
+            ))}
+          </View>
+        </SkeletonLoading>
       </View>
     );
   }
