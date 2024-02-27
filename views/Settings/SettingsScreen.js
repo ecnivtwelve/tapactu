@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, ScrollView, Image, StatusBar, Platform } from 'react-native';
+import { Alert, View, Text, ScrollView, Image, StatusBar, Platform } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { NativeItem, NativeList, NativeText } from '../../components/NativeTableView';
@@ -74,9 +74,25 @@ function SettingsScreen({ navigation }) {
           <NativeItem
             leading={<Trash2 size={24} color={colors.text}/>}
             onPress={() => {
-              AsyncStorage.clear();
-              navigation.goBack();
-              navigation.navigate("Welcome");
+              Alert.alert(
+                "Réinitialiser l'application",
+                "Êtes-vous sûr de vouloir réinitialiser l'application ? Cette action est irréversible.",
+                [
+                  {
+                    text: "Annuler",
+                    style: "cancel"
+                  },
+                  { text: "Oui, réinitialiser", style: 'destructive', onPress: async () => {
+                    try {
+                      await AsyncStorage.clear();
+                      navigation.goBack();
+                      navigation.navigate("Welcome");
+                    } catch (e) {
+                      console.error(e);
+                    }
+                  }}
+                ]
+              );
             }}
           >
             <NativeText heading="h4">
