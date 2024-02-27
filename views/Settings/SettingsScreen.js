@@ -32,7 +32,7 @@ function SettingsScreen({ navigation }) {
             gap: 1,
         }}>
             <Image source={require('../../assets/icon.png')}
-            style={{ width: 150, height: 150, margin: 10, alignSelf: 'center', borderRadius: 500, }}
+            style={{ width: 80, height: 80, margin: 10, alignSelf: 'center', borderRadius: 18, borderCurve: 'continuous' }}
             />
             <NativeText heading="h1">Tapactu</NativeText>
             <NativeText style={{ fontSize: 16, opacity: 0.6 }}>{version}</NativeText>
@@ -107,23 +107,6 @@ function SettingsScreen({ navigation }) {
         </NativeList>
 
     </ScrollView>
-    <View style={{ 
-        position: "absolute",
-        bottom: insets.bottom + 15,
-        width: "100%",
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "center",
-    
-    }}>
-      
-      <NativeText heading="subtitle2" 
-        style={{ 
-            color: colors.text,
-            }}>
-                © 2024 Tapactu | Made by Trycent Technologies
-            </NativeText>
-            </View>
             </>
 
   );
