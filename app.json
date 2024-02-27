@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "tapactu",
+    "name": "Tapactu",
     "slug": "tapactu",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -8,18 +8,28 @@
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "resizeMode": "cover",
+      "backgroundColor": "#F4F4F4"
     },
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "splash": {
+        "image": "./assets/splash.png",
+        "resizeMode": "cover",
+        "backgroundColor": "#F4F4F4",
+        "dark": {
+          "image": "./assets/splash_dark.png",
+          "resizeMode": "cover",
+          "backgroundColor": "#000000"
+        }
+      },
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/icon_android.png",
         "backgroundColor": "#ffffff"
       }
     },

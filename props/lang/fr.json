@@ -47,6 +47,7 @@
   "managesource_action_remove_description": "Supprimer cette source de vos abonnements",
 
   "details_read_on": "Lire sur",
+  "details_saved": "Enregistré",
 
   "settings_change_name": "Changer de nom",
   "settings_change_name_desc": "Modifier votre nom d'utilisateur",
@@ -68,5 +69,8 @@
   "welcome_whats_your_cta": "Entrez votre nom",
   "welcome_whats_your_detail": "Vous pouvez changer ce paramètre à tout moment dans les paramètres de l'application.",
   "welcome_welcome": "Bienvenue",
-  "welcome_lets_go": "C'est parti !"
+  "welcome_lets_go": "C'est parti !",
+
+  "saved_no_saved": "Aucune actualité enregistrée",
+  "saved_search": "Rechercher des actualités",
 }

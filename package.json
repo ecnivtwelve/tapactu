@@ -12,7 +12,7 @@
     "@react-native-async-storage/async-storage": "1.18.2",
     "@react-navigation/bottom-tabs": "^6.5.14",
     "@react-navigation/native": "^6.1.9",
-    "@react-navigation/native-stack": "^6.9.17",
+    "@react-navigation/native-stack": "^6.9.20",
     "expo": "~49.0.15",
     "expo-blur": "~12.4.1",
     "expo-font": "~11.4.0",
