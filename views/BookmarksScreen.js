@@ -87,7 +87,7 @@ function BookmarkScreen({ navigation }) {
                 onPress={() => {
                   navigation.navigate('ArticleInset', { item: item });
                 }}
-                leading={item.enclosures[0].url &&
+                leading={item.enclosures.length > 0 && item.enclosures[0].url &&
                   <Image
                     source={{ uri: item.enclosures[0].url }}
                     style={{
