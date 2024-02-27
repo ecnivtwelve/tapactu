@@ -25,6 +25,10 @@ const headerStyles = {
   headerLargeTitleStyle: {
     fontFamily: 'Merriweather-Bold',
   },
+  headerBackTitleStyle: {
+    fontFamily: 'MerriweatherSans-Regular',
+    fontSize: 16,
+  },
 };
 
 function TabNavigation() {
@@ -101,6 +105,27 @@ function TabNavigation() {
 
 const Stack = createNativeStackNavigator();
 
+const SettingsNavigation = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        ...headerStyles
+      }}
+    >
+      <Stack.Screen
+        name='SettingsMenu'
+        component={require('./views/Settings/SettingsScreen').default}
+        options={{ headerTitle: 'Paramètres'}}
+      />
+      <Stack.Screen
+        name='ChangeName'
+        component={require('./views/Settings/ChangeNameScreen').default}
+        options={{ headerTitle: 'Changer de nom'}}
+      />
+    </Stack.Navigator>
+  )
+}
+
 const Navigation = () => {
   return (
     <Stack.Navigator
@@ -114,14 +139,30 @@ const Navigation = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name='Settings'
-        component={require('./views/Settings/SettingsScreen').default}
-        options={{ headerTitle: 'Paramètres', presentation: 'modal'}}
+        name='Welcome'
+        component={require('./views/Onboarding/Welcome').default}
+        options={{ headerShown: false, gestureEnabled: false, animation: 'none', }}
       />
       <Stack.Screen
-        name='ChangeName'
-        component={require('./views/Settings/ChangeNameScreen').default}
-        options={{ headerTitle: 'Changer de nom', presentation: 'modal'}}
+        name='SetName'
+        component={require('./views/Onboarding/SetName').default}
+        options={{
+          headerShown: false,
+          animation: 'fade',
+        }}
+      />
+      <Stack.Screen
+        name='HelloScreen'
+        component={require('./views/Onboarding/HelloScreen').default}
+        options={{
+          headerShown: false,
+          animation: 'fade',
+        }}
+      />
+      <Stack.Screen
+        name='Settings'
+        component={SettingsNavigation}
+        options={{ headerShown: false, presentation: 'modal' }}
       />
       <Stack.Screen
         name='Article'

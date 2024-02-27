@@ -53,6 +53,15 @@ function HomeScreen({ navigation }) {
 
   const [scrolled, setScrolled] = useState(false);
 
+  // check if hasDoneBoarding is true
+  React.useLayoutEffect(() => {
+    AsyncStorage.getItem("hasDoneBoarding").then((data) => {
+      if (!data) {
+        navigation.navigate("Welcome");
+      }
+    });
+  }, []);
+
   scrollList.addListener(({ value }) => {
     if (value > 1) {
       setScrolled(true);
