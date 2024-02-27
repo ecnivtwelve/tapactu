@@ -16,6 +16,7 @@
     "expo": "~49.0.15",
     "expo-blur": "~12.4.1",
     "expo-font": "~11.4.0",
+    "expo-navigation-bar": "~2.3.0",
     "expo-splash-screen": "~0.20.5",
     "expo-status-bar": "~1.6.0",
     "expo-web-browser": "~12.3.2",
@@ -29,6 +30,7 @@
     "react-native-safe-area-context": "4.6.3",
     "react-native-screens": "~3.22.0",
     "react-native-sfsymbols": "^1.2.1",
+    "react-native-skeleton-loading": "^1.0.5",
     "react-native-tableview-simple": "^4.4.0",
     "rss-parser": "^3.13.0"
   },

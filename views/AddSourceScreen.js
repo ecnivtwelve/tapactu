@@ -4,6 +4,8 @@ import { NativeList, NativeItem, NativeText } from '../components/NativeTableVie
 
 import { Search } from 'lucide-react-native';
 
+import * as rssParser from 'react-native-rss-parser';
+
 import PopularFeeds from '../data/PopularFeeds.json';
 
 import { useTheme } from '@react-navigation/native';
@@ -54,11 +56,11 @@ function AddSourceScreen({ navigation }) {
   const addFeed = (url) => {
     setLoading(true);
     // check if feed is available
-    fetch(url, {
-      method: 'GET',
-    }).then((response) => {
-      setLoading(false);
-      if (response.status === 200) {
+
+    return fetch(url)
+      .then(response => response.text())
+      .then((responseData) => rssParser.parse(responseData))
+      .then(rss => {
         // add feed to AsyncStorage
         AsyncStorage.getItem('sources').then((data) => {
           let sources = [];
@@ -66,22 +68,18 @@ function AddSourceScreen({ navigation }) {
             sources = JSON.parse(data);
           }
 
-          // check if feed is already in the list
-          if (sources.includes(url)) {
-            Alert.alert('Flux déjà ajouté', 'Ce flux est déjà dans votre liste');
-            return;
-          }
-
-          sources.push(url);
+          sources.push({
+            ...rss,
+            items: [],
+            rss: url,
+          });
           AsyncStorage.setItem('sources', JSON.stringify(sources));
           navigation.goBack();
         });
-      } else {
+      })
+      .catch((error) => {
         Alert.alert('Flux non disponible', 'Le flux n\'est pas disponible');
-      }
-    }).catch((error) => {
-      Alert.alert('Flux non disponible', 'Le flux n\'est pas disponible');
-    });
+      });
   }
 
   return (

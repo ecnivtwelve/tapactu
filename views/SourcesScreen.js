@@ -46,45 +46,7 @@ function SourcesScreen({ navigation }) {
   }, [navigation]);
 
   const manageSource = (source, index) => {
-    Alert.alert(
-      source,
-      'Que voulez-vous faire ?',
-      [
-        {
-          text: 'Annuler',
-          style: 'cancel',
-        },
-        {
-          text: 'Supprimer',
-          style: 'destructive',
-          onPress: () => {
-            Alert.alert(
-              'Supprimer la source',
-              'Voulez-vous vraiment supprimer cette source ?',
-              [
-                {
-                  text: 'Annuler',
-                  style: 'cancel',
-                },
-                {
-                  text: 'Supprimer',
-                  style: 'destructive',
-                  onPress: () => {
-                    let newSources = sources;
-                    newSources.splice(index, 1);
-                    AsyncStorage.setItem('sources', JSON.stringify(newSources)).then(() => {
-                      fetchSources();
-                    });
-                  },
-                },
-              ],
-              { cancelable: true }
-            );
-          },
-        },
-      ],
-      { cancelable: true }
-    );
+    navigation.navigate('ManageSource', { source, index });
   }
 
   return (
@@ -97,10 +59,17 @@ function SourcesScreen({ navigation }) {
           {sources.map((source, index) => (
             <NativeItem
               key={index}
-              leading={<Image source={{ uri: 'https://besticon-demo.herokuapp.com/icon?url=' +  source + '&size=48' }} style={{ width: 24, height: 24, borderRadius: 5 }} />}
+              leading={ source.links[0].url &&
+                <Image source={{ uri: 'https://besticon-demo.herokuapp.com/icon?url=' +  source.links[0].url + '&size=48' }} style={{ width: 24, height: 24, borderRadius: 5 }} />
+              }
               onPress={() => manageSource(source, index)}
             >
-              <NativeText>{source}</NativeText>
+              <NativeText heading="h4">
+                {source.title}
+              </NativeText>
+              <NativeText heading="p2">
+                {source.rss ? source.rss : source.links[0].url}
+              </NativeText>
             </NativeItem>
           ))}
         </NativeList>

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Animated, View, ScrollView, Button, FlatList, RefreshControl, StyleSheet, Image, Pressable, Touchable, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { Animated, View, ScrollView, Button, FlatList, RefreshControl, StyleSheet, Image, Pressable, Touchable, TouchableOpacity, ActivityIndicator, StatusBar, VirtualizedList } from 'react-native';
+
+import SkeletonLoading from 'react-native-skeleton-loading';
 
 import {
   NativeList,
@@ -11,69 +13,12 @@ import { GetHeadlines } from "../fetch/GetNews";
 import { BlurView } from 'expo-blur';
 
 import moment from 'moment';
+import 'moment/locale/fr';
 
-moment.locale('fr', {
-    months : 'janvier_février_mars_avril_mai_juin_juillet_août_septembre_octobre_novembre_décembre'.split('_'),
-    monthsShort : 'janv._févr._mars_avr._mai_juin_juil._août_sept._oct._nov._déc.'.split('_'),
-    monthsParseExact : true,
-    weekdays : 'dimanche_lundi_mardi_mercredi_jeudi_vendredi_samedi'.split('_'),
-    weekdaysShort : 'dim._lun._mar._mer._jeu._ven._sam.'.split('_'),
-    weekdaysMin : 'Di_Lu_Ma_Me_Je_Ve_Sa'.split('_'),
-    weekdaysParseExact : true,
-    longDateFormat : {
-        LT : 'HH:mm',
-        LTS : 'HH:mm:ss',
-        L : 'DD/MM/YYYY',
-        LL : 'D MMMM YYYY',
-        LLL : 'D MMMM YYYY HH:mm',
-        LLLL : 'dddd D MMMM YYYY HH:mm'
-    },
-    calendar : {
-        sameDay : '[Aujourd’hui à] LT',
-        nextDay : '[Demain à] LT',
-        nextWeek : 'dddd [à] LT',
-        lastDay : '[Hier à] LT',
-        lastWeek : 'dddd [dernier à] LT',
-        sameElse : 'L'
-    },
-    relativeTime : {
-        future : 'dans %s',
-        past : 'il y a %s',
-        s : 'quelques secondes',
-        m : 'une minute',
-        mm : '%d minutes',
-        h : 'une heure',
-        hh : '%d heures',
-        d : 'un jour',
-        dd : '%d jours',
-        M : 'un mois',
-        MM : '%d mois',
-        y : 'un an',
-        yy : '%d ans'
-    },
-    dayOfMonthOrdinalParse : /\d{1,2}(er|e)/,
-    ordinal : function (number) {
-        return number + (number === 1 ? 'er' : 'e');
-    },
-    meridiemParse : /PD|MD/,
-    isPM : function (input) {
-        return input.charAt(0) === 'M';
-    },
-    // In case the meridiem units are not separated around 12, then implement
-    // this function (look at locale/id.js for an example).
-    // meridiemHour : function (hour, meridiem) {
-    //     return /* 0-23 hour, given meridiem token and hour 1-12 */ ;
-    // },
-    meridiem : function (hours, minutes, isLower) {
-        return hours < 12 ? 'PD' : 'MD';
-    },
-    week : {
-        dow : 1, // Monday is the first day of the week.
-        doy : 4  // Used to determine first week of the year.
-    }
-});
+moment.locale('fr');
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
+const AnimatedVirtualizedList = Animated.createAnimatedComponent(VirtualizedList);
 
 import { useTheme } from "@react-navigation/native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -93,22 +38,38 @@ function HomeScreen({ navigation }) {
 
   let [date, setDate] = useState("");
 
+  const flatListRef = React.useRef(null);
+
   const getName = async () => {
     let name = await AsyncStorage.getItem("name");
     setName(name);
   };
 
+  let mainInsetAdd = 90;
+
   const scrollList = new Animated.Value(0);
+  const scrollListRef = React.useRef(scrollList);
+  const scrollSnap = React.useRef(new Animated.Value(0)).current;
 
   const [scrolled, setScrolled] = useState(false);
 
   scrollList.addListener(({ value }) => {
     if (value > 1) {
       setScrolled(true);
-    } else {
+    }
+    else {
       setScrolled(false);
     }
   });
+
+  React.useEffect(() => {
+    Animated.spring(scrollSnap, {
+      toValue: scrolled ? 1 : 0,
+      tension: 35, // Control speed
+      friction: 7, // Control bounciness
+      useNativeDriver: false,
+    }).start();
+  }, [scrolled, scrollSnap]);
 
   const TodayDate = () => {
     let date = new Date();
@@ -125,12 +86,18 @@ function HomeScreen({ navigation }) {
 
   const fetchHeadlines = async () => {
     setLoading(true);
-    getName();
     AsyncStorage.getItem('sources').then((data) => {
       if (data) {
-        let sources = JSON.parse(data);
+        let feeds = JSON.parse(data);
+        let sources = [];
+
+        feeds.forEach((feed) => {
+          sources.push(feed.rss);
+        });
+
         setSources(sources);
-        GetHeadlines(sources, 5).then((data) => {
+
+        GetHeadlines(sources, null).then((data) => {
           setHeadlines(data);
           setRefreshing(false);
           setLoading(false);
@@ -142,6 +109,7 @@ function HomeScreen({ navigation }) {
   useEffect(() => {
     fetchHeadlines();
     TodayDate();
+    getName();
   }, []);
 
   // get sources on focus
@@ -165,14 +133,12 @@ function HomeScreen({ navigation }) {
 
   return (
     <View style={{ flex: 1 }}>
+      <StatusBar barStyle={dark ? "light-content" : "dark-content"} backgroundColor={'#00000000'} translucent />
       <View
         style={[
           styles.header,
           {
             paddingTop: insets.top + 10,
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
             paddingBottom: 10,
             borderBottomColor: colors.border + '00',
             borderBottomWidth: 0.5,
@@ -186,6 +152,15 @@ function HomeScreen({ navigation }) {
       >
         <Animated.View
           style={{
+            flex: 1,
+            height: scrollSnap.interpolate({
+              inputRange: [0, 1],
+              outputRange: [20, 0],
+            }),
+          }}
+        />
+        <Animated.View
+          style={{
             position: "absolute",
             top: 0,
             left: 0,
@@ -193,10 +168,13 @@ function HomeScreen({ navigation }) {
             bottom: 0,
             backgroundColor: colors.card + '88',
             borderBottomColor: colors.border,
-            borderBottomWidth: 0.5,
-            opacity: scrollList.interpolate({
-              inputRange: [-200, 20, 60, 2000],
-              outputRange: [0, 0, 1, 1],
+            borderBottomWidth: scrollList.interpolate({
+              inputRange: [0, 20, 500000000],
+              outputRange: [0, 0.5, 0.5],
+            }),
+            opacity: scrollSnap.interpolate({
+              inputRange: [0, 1],
+              outputRange: [0, 1],
             }),
           }}
         >
@@ -208,65 +186,80 @@ function HomeScreen({ navigation }) {
             }}
           />
         </Animated.View>
-        <View
-          style={{ flexDirection: "column", justifyContent: "space-between" }}
-        >
-          <Animated.Text heading="h2" style={{
-            fontSize: scrollList.interpolate({
-              inputRange: [-200, 10, 80, 2000],
-              outputRange: [24, 21, 18, 18],
-            }),
-            fontFamily: 'Merriweather-Bold',
-            color: colors.text,
-          }}>
-            Bonjour, {name} !
-          </Animated.Text>
-          <Animated.Text style={{
-            fontSize: 14.75,
-            fontFamily: 'MerriweatherSans-Medium',
-            opacity: 0.6,
-            color: colors.text,
-          }}>
-            {date}
-          </Animated.Text>
-        </View>
-        <TouchableOpacity
+        <Pressable
           style={{
-            borderRadius: 500,
-            borderWidth: 1,
-            borderColor: colors.border,
-            width: 40,
-            height: 40,
-            justifyContent: "center",
+            flexDirection: "row",
+            justifyContent: "space-between",
             alignItems: "center",
           }}
           onPress={() => {
-            navigation.navigate("Settings");
+            flatListRef.current.scrollToOffset({ animated: true, offset: 0 });
           }}
         >
-          <Settings size={24} color={colors.text} />
-        </TouchableOpacity>
+          <View
+            style={{ flexDirection: "column", justifyContent: "space-between" }}
+          >
+            <Animated.Text heading="h2" style={{
+              fontSize: scrollSnap.interpolate({
+                inputRange: [0, 1],
+                outputRange: [21, 18],
+              }),
+              fontFamily: 'Merriweather-Bold',
+              color: colors.text,
+            }}>
+              Bonjour, {name} !
+            </Animated.Text>
+            <Animated.Text style={{
+              fontSize: 14.75,
+              fontFamily: 'MerriweatherSans-Medium',
+              opacity: 0.6,
+              color: colors.text,
+            }}>
+              {date}
+            </Animated.Text>
+          </View>
+          <TouchableOpacity
+            style={{
+              borderRadius: 500,
+              borderWidth: 1,
+              borderColor: colors.text + '33',
+              width: 40,
+              height: 40,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            onPress={() => {
+              navigation.navigate("Settings");
+            }}
+          >
+            <Settings size={24} color={colors.text} />
+          </TouchableOpacity>
+        </Pressable>
       </View>
 
-      <AnimatedFlatList
+      <AnimatedVirtualizedList
         data={headlines}
+        getItem={(data, index) => data[index]}
+        getItemCount={(data) => data.length}
         style={[styles.list, {
-          paddingTop: insets.top + 70,
+          paddingTop: insets.top + mainInsetAdd,
         }]}
         renderItem={({ item }) => (
           <LargeNewsItem item={item} navigation={navigation} />
         )}
-        ListFooterComponent={<View style={{height: 120}} />}
+        ListFooterComponent={<View style={{height: 50 + mainInsetAdd}} />}
         ListEmptyComponent={<EmptyTapActu sources={sources} loading={loading} navigation={navigation} />}
         refreshing={refreshing}
         onRefresh={fetchHeadlines}
-        progressViewOffset={insets.top + 70}
+        progressViewOffset={insets.top + mainInsetAdd}
         keyExtractor={(item) => item.id}
         scrollEventThrottle={16}
         onScroll={Animated.event(
           [{ nativeEvent: { contentOffset: { y: scrollList } } }],
           { useNativeDriver: false }
         )}
+        scrollIndicatorInsets={{ top: mainInsetAdd - 20 }}
+        ref={flatListRef}
       />
     </View>
   );
@@ -277,14 +270,32 @@ const EmptyTapActu = ({ sources, loading, navigation }) => {
 
   if (loading) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginVertical: 16, gap: 4 }}>
-        <ActivityIndicator />
-        <NativeText heading="h2" style={{textAlign: 'center', marginTop: 8}}>
-          Chargement en cours
-        </NativeText>
-        <NativeText heading="p2" style={{textAlign: 'center'}}>
-          Obtention des dernières actualités...
-        </NativeText>
+      <View
+        style={{
+        }}
+      >
+        <SkeletonLoading
+          background={colors.border}
+          highlight={colors.card}
+        >
+          <View
+            style={{
+            }}
+          >
+            {[...Array(2)].map((_, i) => (
+              <View
+                key={i}
+                style={[
+                  LargeNewsStyles.container,
+                  {
+                    height: 343,
+                    backgroundColor: colors.card,
+                  },
+                ]}
+              />
+            ))}
+          </View>
+        </SkeletonLoading>
       </View>
     );
   }

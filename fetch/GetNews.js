@@ -6,6 +6,9 @@ const GetNewsFromSource = async (source) => {
     .then((responseData) => rssParser.parse(responseData))
     .then(rss => {
       return rss;
+    })
+    .catch((error) => {
+      return null;
     });
 };
 
@@ -16,6 +19,11 @@ const JoinMultipleFeeds = async (feeds, length) => {
 
     for (let i = 0; i < feeds.length; i++) {
       GetNewsFromSource(feeds[i]).then((feed) => {
+        if (!feed) {
+          done++;
+          return;
+        }
+
         // if length is set, only get the first n items
         if (length) {
           feed.items = feed.items.slice(0, length);

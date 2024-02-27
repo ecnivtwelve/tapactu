@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StatusBar, Text, useColorScheme, View } from 'react-native';
+import { Platform, StatusBar, Text, useColorScheme, View } from 'react-native';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -9,6 +9,8 @@ import UITheme from './props/NativeColors';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 SplashScreen.preventAutoHideAsync();
+
+import * as NavigationBar from 'expo-navigation-bar';
 
 import { Newspaper, SwatchBook, Search, Bookmark } from 'lucide-react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -134,12 +136,24 @@ const Navigation = () => {
           presentation: 'modal',
         }}
       />
+      <Stack.Screen
+        name='ManageSource'
+        component={require('./views/Source/ManageSource').default}
+        options={{
+          headerTitle: 'Gérer la source',
+          presentation: 'modal',
+        }}
+      />
     </Stack.Navigator>
   )
 }
 
 export default function App() {
   const scheme = useColorScheme();
+
+  if (Platform.OS === 'android') {
+    NavigationBar.setBackgroundColorAsync(UITheme(scheme).colors.card, true);
+  }
 
   const [fontsLoaded, fontError] = useFonts({
     'Merriweather-Light': require('./assets/fonts/Merriweather-Light.ttf'),
